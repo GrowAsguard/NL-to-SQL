@@ -35,10 +35,13 @@
 
 h1{
   font-size: 7em;
-  color: #ebebeb;
+  color: #000000;
 }
 
-
+#input_text{
+  border-color: white;
+  border-width: 10rem;
+}
 
 .container{
   display: flexbox;
