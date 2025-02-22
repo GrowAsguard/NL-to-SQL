@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import axios from 'axios';
+import './App.css';
 
 function App() {
     // State variables
@@ -10,6 +11,12 @@ function App() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [uploadedSchema, setUploadedSchema] = useState(null);
+
+    const insertText = async (event) => {
+        event.preventDefault();
+        const response = await axios.get('http://localhost:5000/render');
+        document.getElementById('insert').innerHTML = response.data;
+    }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -54,6 +61,8 @@ function App() {
 
     return (
         <div className="App" style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+
+        <div className='container'>
             <h1>Database Table Analyzer</h1>
 
             <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
@@ -87,6 +96,7 @@ function App() {
                     </ul>
                 </div>
             )}
+            </div>
         </div>
     );
 }
