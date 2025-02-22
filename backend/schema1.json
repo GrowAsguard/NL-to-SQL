@@ -1,0 +1,967 @@
+{
+    "schema_name": "eCommercePlatform",
+    "description": "Schema for a large-scale e-commerce platform database.",
+    "version": "1.0",
+    "tables": [
+      {
+        "table_name": "users",
+        "columns": [
+          {
+            "column_name": "user_id",
+            "data_type": "INT",
+            "is_nullable": false,
+            "is_unique": true,
+            "is_primary_key": true,
+            "auto_increment": true,
+            "description": "Unique user identifier"
+          },
+          {
+            "column_name": "username",
+            "data_type": "VARCHAR(50)",
+            "is_nullable": false,
+            "is_unique": true,
+            "description": "User's unique username for login"
+          },
+          {
+            "column_name": "email",
+            "data_type": "VARCHAR(255)",
+            "is_nullable": false,
+            "is_unique": true,
+            "description": "User's email address"
+          },
+          {
+            "column_name": "password_hash",
+            "data_type": "VARCHAR(255)",
+            "is_nullable": false,
+            "description": "Hashed password for security"
+          },
+          {
+            "column_name": "first_name",
+            "data_type": "VARCHAR(50)",
+            "is_nullable": true,
+            "description": "User's first name"
+          },
+          {
+            "column_name": "last_name",
+            "data_type": "VARCHAR(50)",
+            "is_nullable": true,
+            "description": "User's last name"
+          },
+          {
+            "column_name": "phone_number",
+            "data_type": "VARCHAR(20)",
+            "is_nullable": true,
+            "description": "User's phone number"
+          },
+          {
+            "column_name": "registration_date",
+            "data_type": "TIMESTAMP",
+            "is_nullable": false,
+            "default_value": "CURRENT_TIMESTAMP",
+            "description": "Date and time of user registration"
+          },
+          {
+            "column_name": "last_login",
+            "data_type": "TIMESTAMP",
+            "is_nullable": true,
+            "description": "Date and time of last login"
+          },
+          {
+            "column_name": "is_active",
+            "data_type": "BOOLEAN",
+            "is_nullable": false,
+            "default_value": true,
+            "description": "Account active status"
+          },
+          {
+            "column_name": "role_id",
+            "data_type": "INT",
+            "is_nullable": false,
+            "description": "Foreign key referencing user roles"
+          }
+        ],
+        "primary_key": [
+          "user_id"
+        ],
+        "foreign_keys": [
+          {
+            "column_name": "role_id",
+            "references_table": "roles",
+            "references_column": "role_id"
+          }
+        ],
+        "indexes": [
+          {
+            "index_name": "idx_users_email",
+            "columns": [
+              "email"
+            ],
+            "is_unique": true
+          },
+          {
+            "index_name": "idx_users_username",
+            "columns": [
+              "username"
+            ],
+            "is_unique": true
+          }
+        ]
+      },
+      {
+        "table_name": "roles",
+        "columns": [
+          {
+            "column_name": "role_id",
+            "data_type": "INT",
+            "is_nullable": false,
+            "is_unique": true,
+            "is_primary_key": true,
+            "auto_increment": true,
+            "description": "Unique role identifier"
+          },
+          {
+            "column_name": "role_name",
+            "data_type": "VARCHAR(50)",
+            "is_nullable": false,
+            "is_unique": true,
+            "description": "Name of the user role (e.g., Admin, Customer, Seller)"
+          },
+          {
+            "column_name": "description",
+            "data_type": "TEXT",
+            "is_nullable": true,
+            "description": "Description of the role and its permissions"
+          }
+        ],
+        "primary_key": [
+          "role_id"
+        ],
+        "indexes": [
+          {
+            "index_name": "idx_roles_role_name",
+            "columns": [
+              "role_name"
+            ],
+            "is_unique": true
+          }
+        ]
+      },
+      {
+        "table_name": "products",
+        "columns": [
+          {
+            "column_name": "product_id",
+            "data_type": "INT",
+            "is_nullable": false,
+            "is_unique": true,
+            "is_primary_key": true,
+            "auto_increment": true,
+            "description": "Unique product identifier"
+          },
+          {
+            "column_name": "product_name",
+            "data_type": "VARCHAR(255)",
+            "is_nullable": false,
+            "description": "Name of the product"
+          },
+          {
+            "column_name": "description",
+            "data_type": "TEXT",
+            "is_nullable": true,
+            "description": "Detailed product description"
+          },
+          {
+            "column_name": "price",
+            "data_type": "DECIMAL(10, 2)",
+            "is_nullable": false,
+            "description": "Selling price of the product"
+          },
+          {
+            "column_name": "sku",
+            "data_type": "VARCHAR(50)",
+            "is_nullable": false,
+            "is_unique": true,
+            "description": "Stock Keeping Unit, unique product identifier for inventory"
+          },
+          {
+            "column_name": "category_id",
+            "data_type": "INT",
+            "is_nullable": false,
+            "description": "Foreign key referencing product categories"
+          },
+          {
+            "column_name": "brand_id",
+            "data_type": "INT",
+            "is_nullable": true,
+            "description": "Foreign key referencing product brands"
+          },
+          {
+            "column_name": "supplier_id",
+            "data_type": "INT",
+            "is_nullable": true,
+            "description": "Foreign key referencing product suppliers"
+          },
+          {
+            "column_name": "stock_quantity",
+            "data_type": "INT",
+            "is_nullable": false,
+            "default_value": 0,
+            "description": "Current stock quantity available"
+          },
+          {
+            "column_name": "is_available",
+            "data_type": "BOOLEAN",
+            "is_nullable": false,
+            "default_value": true,
+            "description": "Product availability status"
+          },
+          {
+            "column_name": "created_at",
+            "data_type": "TIMESTAMP",
+            "is_nullable": false,
+            "default_value": "CURRENT_TIMESTAMP",
+            "description": "Date and time of product creation"
+          },
+          {
+            "column_name": "updated_at",
+            "data_type": "TIMESTAMP",
+            "is_nullable": true,
+            "on_update": "CURRENT_TIMESTAMP",
+            "description": "Date and time of last product update"
+          }
+        ],
+        "primary_key": [
+          "product_id"
+        ],
+        "foreign_keys": [
+          {
+            "column_name": "category_id",
+            "references_table": "categories",
+            "references_column": "category_id"
+          },
+          {
+            "column_name": "brand_id",
+            "references_table": "brands",
+            "references_column": "brand_id"
+          },
+          {
+            "column_name": "supplier_id",
+            "references_table": "suppliers",
+            "references_column": "supplier_id"
+          }
+        ],
+        "indexes": [
+          {
+            "index_name": "idx_products_sku",
+            "columns": [
+              "sku"
+            ],
+            "is_unique": true
+          },
+          {
+            "index_name": "idx_products_category_id",
+            "columns": [
+              "category_id"
+            ]
+          }
+        ]
+      },
+      {
+        "table_name": "categories",
+        "columns": [
+          {
+            "column_name": "category_id",
+            "data_type": "INT",
+            "is_nullable": false,
+            "is_unique": true,
+            "is_primary_key": true,
+            "auto_increment": true,
+            "description": "Unique category identifier"
+          },
+          {
+            "column_name": "category_name",
+            "data_type": "VARCHAR(100)",
+            "is_nullable": false,
+            "is_unique": true,
+            "description": "Name of the product category"
+          },
+          {
+            "column_name": "description",
+            "data_type": "TEXT",
+            "is_nullable": true,
+            "description": "Category description"
+          },
+          {
+            "column_name": "parent_category_id",
+            "data_type": "INT",
+            "is_nullable": true,
+            "description": "Foreign key referencing parent category for hierarchical structure (self-reference)"
+          }
+        ],
+        "primary_key": [
+          "category_id"
+        ],
+        "foreign_keys": [
+          {
+            "column_name": "parent_category_id",
+            "references_table": "categories",
+            "references_column": "category_id"
+          }
+        ],
+        "indexes": [
+          {
+            "index_name": "idx_categories_category_name",
+            "columns": [
+              "category_name"
+            ],
+            "is_unique": true
+          }
+        ]
+      },
+      {
+        "table_name": "brands",
+        "columns": [
+          {
+            "column_name": "brand_id",
+            "data_type": "INT",
+            "is_nullable": false,
+            "is_unique": true,
+            "is_primary_key": true,
+            "auto_increment": true,
+            "description": "Unique brand identifier"
+          },
+          {
+            "column_name": "brand_name",
+            "data_type": "VARCHAR(100)",
+            "is_nullable": false,
+            "is_unique": true,
+            "description": "Name of the product brand"
+          },
+          {
+            "column_name": "description",
+            "data_type": "TEXT",
+            "is_nullable": true,
+            "description": "Brand description"
+          },
+          {
+            "column_name": "logo_url",
+            "data_type": "VARCHAR(255)",
+            "is_nullable": true,
+            "description": "URL to brand logo image"
+          }
+        ],
+        "primary_key": [
+          "brand_id"
+        ],
+        "indexes": [
+          {
+            "index_name": "idx_brands_brand_name",
+            "columns": [
+              "brand_name"
+            ],
+            "is_unique": true
+          }
+        ]
+      },
+      {
+        "table_name": "suppliers",
+        "columns": [
+          {
+            "column_name": "supplier_id",
+            "data_type": "INT",
+            "is_nullable": false,
+            "is_unique": true,
+            "is_primary_key": true,
+            "auto_increment": true,
+            "description": "Unique supplier identifier"
+          },
+          {
+            "column_name": "supplier_name",
+            "data_type": "VARCHAR(255)",
+            "is_nullable": false,
+            "description": "Name of the supplier company"
+          },
+          {
+            "column_name": "contact_name",
+            "data_type": "VARCHAR(100)",
+            "is_nullable": true,
+            "description": "Contact person name at the supplier"
+          },
+          {
+            "column_name": "contact_email",
+            "data_type": "VARCHAR(255)",
+            "is_nullable": true,
+            "description": "Contact email address"
+          },
+          {
+            "column_name": "contact_phone",
+            "data_type": "VARCHAR(20)",
+            "is_nullable": true,
+            "description": "Contact phone number"
+          },
+          {
+            "column_name": "address_id",
+            "data_type": "INT",
+            "is_nullable": true,
+            "description": "Foreign key referencing supplier address"
+          }
+        ],
+        "primary_key": [
+          "supplier_id"
+        ],
+        "foreign_keys": [
+          {
+            "column_name": "address_id",
+            "references_table": "addresses",
+            "references_column": "address_id"
+          }
+        ]
+      },
+      {
+        "table_name": "orders",
+        "columns": [
+          {
+            "column_name": "order_id",
+            "data_type": "INT",
+            "is_nullable": false,
+            "is_unique": true,
+            "is_primary_key": true,
+            "auto_increment": true,
+            "description": "Unique order identifier"
+          },
+          {
+            "column_name": "user_id",
+            "data_type": "INT",
+            "is_nullable": false,
+            "description": "Foreign key referencing the user who placed the order"
+          },
+          {
+            "column_name": "order_date",
+            "data_type": "TIMESTAMP",
+            "is_nullable": false,
+            "default_value": "CURRENT_TIMESTAMP",
+            "description": "Date and time when the order was placed"
+          },
+          {
+            "column_name": "shipping_address_id",
+            "data_type": "INT",
+            "is_nullable": false,
+            "description": "Foreign key referencing shipping address"
+          },
+          {
+            "column_name": "billing_address_id",
+            "data_type": "INT",
+            "is_nullable": false,
+            "description": "Foreign key referencing billing address"
+          },
+          {
+            "column_name": "payment_method_id",
+            "data_type": "INT",
+            "is_nullable": false,
+            "description": "Foreign key referencing payment method used"
+          },
+          {
+            "column_name": "order_status",
+            "data_type": "VARCHAR(50)",
+            "is_nullable": false,
+            "default_value": "PENDING",
+            "description": "Current status of the order (e.g., Pending, Processing, Shipped, Delivered)"
+          },
+          {
+            "column_name": "total_amount",
+            "data_type": "DECIMAL(10, 2)",
+            "is_nullable": false,
+            "description": "Total amount of the order"
+          },
+          {
+            "column_name": "discount_applied",
+            "data_type": "DECIMAL(10, 2)",
+            "is_nullable": true,
+            "description": "Discount amount applied to the order"
+          },
+          {
+            "column_name": "notes",
+            "data_type": "TEXT",
+            "is_nullable": true,
+            "description": "Optional notes or instructions for the order"
+          }
+        ],
+        "primary_key": [
+          "order_id"
+        ],
+        "foreign_keys": [
+          {
+            "column_name": "user_id",
+            "references_table": "users",
+            "references_column": "user_id"
+          },
+          {
+            "column_name": "shipping_address_id",
+            "references_table": "addresses",
+            "references_column": "address_id"
+          },
+          {
+            "column_name": "billing_address_id",
+            "references_table": "addresses",
+            "references_column": "address_id"
+          },
+          {
+            "column_name": "payment_method_id",
+            "references_table": "payment_methods",
+            "references_column": "payment_method_id"
+          }
+        ],
+        "indexes": [
+          {
+            "index_name": "idx_orders_user_id",
+            "columns": [
+              "user_id"
+            ]
+          },
+          {
+            "index_name": "idx_orders_order_date",
+            "columns": [
+              "order_date"
+            ]
+          }
+        ]
+      },
+      {
+        "table_name": "order_items",
+        "columns": [
+          {
+            "column_name": "order_item_id",
+            "data_type": "INT",
+            "is_nullable": false,
+            "is_unique": true,
+            "is_primary_key": true,
+            "auto_increment": true,
+            "description": "Unique order item identifier"
+          },
+          {
+            "column_name": "order_id",
+            "data_type": "INT",
+            "is_nullable": false,
+            "description": "Foreign key referencing the order"
+          },
+          {
+            "column_name": "product_id",
+            "data_type": "INT",
+            "is_nullable": false,
+            "description": "Foreign key referencing the product in the order item"
+          },
+          {
+            "column_name": "quantity",
+            "data_type": "INT",
+            "is_nullable": false,
+            "description": "Quantity of the product in the order item"
+          },
+          {
+            "column_name": "item_price",
+            "data_type": "DECIMAL(10, 2)",
+            "is_nullable": false,
+            "description": "Price of the item at the time of order"
+          },
+          {
+            "column_name": "discount_applied",
+            "data_type": "DECIMAL(10, 2)",
+            "is_nullable": true,
+            "description": "Discount applied to this specific item"
+          }
+        ],
+        "primary_key": [
+          "order_item_id"
+        ],
+        "foreign_keys": [
+          {
+            "column_name": "order_id",
+            "references_table": "orders",
+            "references_column": "order_id"
+          },
+          {
+            "column_name": "product_id",
+            "references_table": "products",
+            "references_column": "product_id"
+          }
+        ],
+        "indexes": [
+          {
+            "index_name": "idx_order_items_order_id",
+            "columns": [
+              "order_id"
+            ]
+          },
+          {
+            "index_name": "idx_order_items_product_id",
+            "columns": [
+              "product_id"
+            ]
+          }
+        ]
+      },
+      {
+        "table_name": "addresses",
+        "columns": [
+          {
+            "column_name": "address_id",
+            "data_type": "INT",
+            "is_nullable": false,
+            "is_unique": true,
+            "is_primary_key": true,
+            "auto_increment": true,
+            "description": "Unique address identifier"
+          },
+          {
+            "column_name": "user_id",
+            "data_type": "INT",
+            "is_nullable": true,
+            "description": "Foreign key referencing the user who owns the address"
+          },
+          {
+            "column_name": "street_address",
+            "data_type": "VARCHAR(255)",
+            "is_nullable": false,
+            "description": "Street address line 1"
+          },
+          {
+            "column_name": "apartment_suite",
+            "data_type": "VARCHAR(100)",
+            "is_nullable": true,
+            "description": "Apartment, suite, or unit number"
+          },
+          {
+            "column_name": "city",
+            "data_type": "VARCHAR(100)",
+            "is_nullable": false,
+            "description": "City name"
+          },
+          {
+            "column_name": "state_province",
+            "data_type": "VARCHAR(100)",
+            "is_nullable": false,
+            "description": "State or province name"
+          },
+          {
+            "column_name": "postal_code",
+            "data_type": "VARCHAR(20)",
+            "is_nullable": false,
+            "description": "Postal or zip code"
+          },
+          {
+            "column_name": "country",
+            "data_type": "VARCHAR(50)",
+            "is_nullable": false,
+            "description": "Country name"
+          },
+          {
+            "column_name": "is_default_shipping",
+            "data_type": "BOOLEAN",
+            "is_nullable": false,
+            "default_value": false,
+            "description": "Flag indicating if this is the default shipping address"
+          },
+          {
+            "column_name": "is_default_billing",
+            "data_type": "BOOLEAN",
+            "is_nullable": false,
+            "default_value": false,
+            "description": "Flag indicating if this is the default billing address"
+          }
+        ],
+        "primary_key": [
+          "address_id"
+        ],
+        "foreign_keys": [
+          {
+            "column_name": "user_id",
+            "references_table": "users",
+            "references_column": "user_id"
+          }
+        ],
+        "indexes": [
+          {
+            "index_name": "idx_addresses_user_id",
+            "columns": [
+              "user_id"
+            ]
+          }
+        ]
+      },
+      {
+        "table_name": "payment_methods",
+        "columns": [
+          {
+            "column_name": "payment_method_id",
+            "data_type": "INT",
+            "is_nullable": false,
+            "is_unique": true,
+            "is_primary_key": true,
+            "auto_increment": true,
+            "description": "Unique payment method identifier"
+          },
+          {
+            "column_name": "user_id",
+            "data_type": "INT",
+            "is_nullable": false,
+            "description": "Foreign key referencing the user who owns the payment method"
+          },
+          {
+            "column_name": "payment_type",
+            "data_type": "VARCHAR(50)",
+            "is_nullable": false,
+            "description": "Type of payment method (e.g., Credit Card, PayPal)"
+          },
+          {
+            "column_name": "card_number_hash",
+            "data_type": "VARCHAR(255)",
+            "is_nullable": true,
+            "description": "Hashed credit card number"
+          },
+          {
+            "column_name": "expiry_date",
+            "data_type": "DATE",
+            "is_nullable": true,
+            "description": "Credit card expiry date"
+          },
+          {
+            "column_name": "provider",
+            "data_type": "VARCHAR(100)",
+            "is_nullable": true,
+            "description": "Payment provider name (e.g., Visa, Mastercard, PayPal)"
+          },
+          {
+            "column_name": "account_details",
+            "data_type": "JSON",
+            "is_nullable": true,
+            "description": "JSON object to store account-specific details for other payment types"
+          },
+          {
+            "column_name": "is_default",
+            "data_type": "BOOLEAN",
+            "is_nullable": false,
+            "default_value": false,
+            "description": "Flag indicating if this is the default payment method"
+          }
+        ],
+        "primary_key": [
+          "payment_method_id"
+        ],
+        "foreign_keys": [
+          {
+            "column_name": "user_id",
+            "references_table": "users",
+            "references_column": "user_id"
+          }
+        ],
+        "indexes": [
+          {
+            "index_name": "idx_payment_methods_user_id",
+            "columns": [
+              "user_id"
+            ]
+          }
+        ]
+      },
+      {
+        "table_name": "product_images",
+        "columns": [
+          {
+            "column_name": "image_id",
+            "data_type": "INT",
+            "is_nullable": false,
+            "is_unique": true,
+            "is_primary_key": true,
+            "auto_increment": true,
+            "description": "Unique image identifier"
+          },
+          {
+            "column_name": "product_id",
+            "data_type": "INT",
+            "is_nullable": false,
+            "description": "Foreign key referencing the product"
+          },
+          {
+            "column_name": "image_url",
+            "data_type": "VARCHAR(255)",
+            "is_nullable": false,
+            "description": "URL of the product image"
+          },
+          {
+            "column_name": "is_thumbnail",
+            "data_type": "BOOLEAN",
+            "is_nullable": false,
+            "default_value": false,
+            "description": "Flag indicating if this is the thumbnail image"
+          },
+          {
+            "column_name": "alt_text",
+            "data_type": "VARCHAR(255)",
+            "is_nullable": true,
+            "description": "Alternative text for image accessibility"
+          }
+        ],
+        "primary_key": [
+          "image_id"
+        ],
+        "foreign_keys": [
+          {
+            "column_name": "product_id",
+            "references_table": "products",
+            "references_column": "product_id"
+          }
+        ],
+        "indexes": [
+          {
+            "index_name": "idx_product_images_product_id",
+            "columns": [
+              "product_id"
+            ]
+          }
+        ]
+      },
+      {
+        "table_name": "product_reviews",
+        "columns": [
+          {
+            "column_name": "review_id",
+            "data_type": "INT",
+            "is_nullable": false,
+            "is_unique": true,
+            "is_primary_key": true,
+            "auto_increment": true,
+            "description": "Unique review identifier"
+          },
+          {
+            "column_name": "user_id",
+            "data_type": "INT",
+            "is_nullable": false,
+            "description": "Foreign key referencing the user who wrote the review"
+          },
+          {
+            "column_name": "product_id",
+            "data_type": "INT",
+            "is_nullable": false,
+            "description": "Foreign key referencing the reviewed product"
+          },
+          {
+            "column_name": "rating",
+            "data_type": "INT",
+            "is_nullable": false,
+            "constraints": "CHECK (rating BETWEEN 1 AND 5)",
+            "description": "Rating given by the user (1-5 stars)"
+          },
+          {
+            "column_name": "review_text",
+            "data_type": "TEXT",
+            "is_nullable": true,
+            "description": "Text content of the review"
+          },
+          {
+            "column_name": "review_date",
+            "data_type": "TIMESTAMP",
+            "is_nullable": false,
+            "default_value": "CURRENT_TIMESTAMP",
+            "description": "Date and time when the review was submitted"
+          }
+        ],
+        "primary_key": [
+          "review_id"
+        ],
+        "foreign_keys": [
+          {
+            "column_name": "user_id",
+            "references_table": "users",
+            "references_column": "user_id"
+          },
+          {
+            "column_name": "product_id",
+            "references_table": "products",
+            "references_column": "product_id"
+          }
+        ],
+        "indexes": [
+          {
+            "index_name": "idx_product_reviews_product_id",
+            "columns": [
+              "product_id"
+            ]
+          },
+          {
+            "index_name": "idx_product_reviews_user_id",
+            "columns": [
+              "user_id"
+            ]
+          }
+        ]
+      },
+      {
+        "table_name": "inventory_transactions",
+        "columns": [
+          {
+            "column_name": "transaction_id",
+            "data_type": "INT",
+            "is_nullable": false,
+            "is_unique": true,
+            "is_primary_key": true,
+            "auto_increment": true,
+            "description": "Unique transaction identifier"
+          },
+          {
+            "column_name": "product_id",
+            "data_type": "INT",
+            "is_nullable": false,
+            "description": "Foreign key referencing the product"
+          },
+          {
+            "column_name": "transaction_type",
+            "data_type": "ENUM('IN', 'OUT', 'ADJUSTMENT')",
+            "is_nullable": false,
+            "description": "Type of transaction (IN for stock inflow, OUT for outflow, ADJUSTMENT for manual changes)"
+          },
+          {
+            "column_name": "quantity_change",
+            "data_type": "INT",
+            "is_nullable": false,
+            "description": "Quantity of stock changed in the transaction"
+          },
+          {
+            "column_name": "transaction_date",
+            "data_type": "TIMESTAMP",
+            "is_nullable": false,
+            "default_value": "CURRENT_TIMESTAMP",
+            "description": "Date and time of the transaction"
+          },
+          {
+            "column_name": "reason",
+            "data_type": "VARCHAR(255)",
+            "is_nullable": true,
+            "description": "Reason for the inventory transaction"
+          }
+        ],
+        "primary_key": [
+          "transaction_id"
+        ],
+        "foreign_keys": [
+          {
+            "column_name": "product_id",
+            "references_table": "products",
+            "references_column": "product_id"
+          }
+        ],
+        "indexes": [
+          {
+            "index_name": "idx_inventory_transactions_product_id",
+            "columns": [
+              "product_id"
+            ]
+          },
+          {
+            "index_name": "idx_inventory_transactions_date",
+            "columns": [
+              "transaction_date"
+            ]
+          }
+        ]
+      }
+    ]
+  }
