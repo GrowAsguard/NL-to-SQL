@@ -29,9 +29,7 @@ This project is a **MERN (MongoDB, Express.js, React.js, Node.js)** website desi
 ### **Database (Conceptual):**
 - **MongoDB** - NoSQL database (MongoDB is part of the MERN stack, but this version of the project focuses on schema analysis and does not directly interact with a database for data storage.)
 
-### **Natural Language Processing (for comparison - TF-IDF & NER method):**
-- **spaCy** - Library for advanced Natural Language Processing
-- **scikit-learn** - Machine learning library in Python (for TF-IDF)
+
 
 ## Setup Instructions
 
@@ -138,5 +136,5 @@ This is a **basic implementation** and can be extended in several ways:
 - **Deployment:** Deploy the **MERN application** to a cloud hosting platform like **Heroku, Netlify, AWS, or Google Cloud** to make it accessible online.
 
 ## Contact
-GLK Abhiram Reddy
-Kabir Ahmed
+- GLK Abhiram Reddy (1CR22IS049)
+- Kabir Ahmed (1CR22IS065)
