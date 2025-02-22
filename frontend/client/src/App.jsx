@@ -18,9 +18,10 @@ function App() {
         setRelevantTables([]);
 
         try {
-            const response = await axios.post('http://localhost:5000/api/relevant-tables', {
+            const schemaToUse = uploadedSchema || null;
+            const response = await axios.post('/api/relevant-tables', {
                 nl_query: nlQuery,
-                schema: uploadedSchema,
+                schema: schemaToUse,
             });
             setRelevantTables(response.data.relevantTables);
         } catch (err) {
@@ -85,6 +86,10 @@ function App() {
                             <li key={index}>{table}</li>
                         ))}
                     </ul>
+                    <h3>JSON Output:</h3>
+                    <pre style={{ backgroundColor: '#f8f9fa', padding: '10px', borderRadius: '5px' }}>
+                        {JSON.stringify(relevantTables, null, 2)}
+                    </pre>
                 </div>
             )}
         </div>
