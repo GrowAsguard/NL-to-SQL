@@ -4,6 +4,8 @@
 
 This project is a **MERN (MongoDB, Express.js, React.js, Node.js)** website designed to process natural language queries and identify relevant database tables from a provided schema. It leverages the **Google Gemini API** to understand user queries and map them to database schema elements.
 
+## [Video of Output](https://vimeo.com/1059246599)
+
 ## Functionality
 
 - **Natural Language Query Input:** Users can enter natural language queries through a web interface.
