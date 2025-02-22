@@ -1,15 +1,12 @@
 // src/App.jsx
-
 import React, { useState } from 'react';
 import axios from 'axios';
 
 function App() {
-    // State variables
     const [nlQuery, setNlQuery] = useState('');
     const [relevantTables, setRelevantTables] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [uploadedSchema, setUploadedSchema] = useState(null);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -18,10 +15,7 @@ function App() {
         setRelevantTables([]);
 
         try {
-            const response = await axios.post('http://localhost:5000/api/relevant-tables', {
-                nl_query: nlQuery,
-                schema: uploadedSchema,
-            });
+            const response = await axios.post('http://localhost:5000/api/relevant-tables', { nl_query: nlQuery });
             setRelevantTables(response.data.relevantTables);
         } catch (err) {
             setError(err.message || 'Failed to fetch relevant tables');
@@ -31,31 +25,9 @@ function App() {
         }
     };
 
-    const handleSchemaUpload = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                try {
-                    const parsedSchema = JSON.parse(e.target.result);
-                    setUploadedSchema(parsedSchema);
-                } catch (parseError) {
-                    setError('Error parsing uploaded JSON schema file.');
-                    setUploadedSchema(null);
-                }
-            };
-            reader.onerror = () => {
-                setError('Error reading uploaded schema file.');
-                setUploadedSchema(null);
-            };
-            reader.readAsText(file);
-        }
-    };
-
     return (
         <div className="App" style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
             <h1>Database Table Analyzer</h1>
-
             <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
                 <input
                     type="text"
@@ -64,16 +36,10 @@ function App() {
                     placeholder="Enter your natural language query"
                     style={{ padding: '10px', marginRight: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
                 />
-                <button
-                    type="submit"
-                    disabled={loading}
-                    style={{ padding: '10px 20px', borderRadius: '5px', border: 'none', backgroundColor: '#007bff', color: 'white', cursor: 'pointer' }}
-                >
+                <button type="submit" disabled={loading} style={{ padding: '10px 20px', borderRadius: '5px', border: 'none', backgroundColor: '#007bff', color: 'white', cursor: 'pointer' }}>
                     {loading ? 'Analyzing...' : 'Analyze Query'}
                 </button>
             </form>
-
-            <input type="file" accept=".json" onChange={handleSchemaUpload} style={{ marginBottom: '20px' }} />
 
             {error && <p style={{ color: 'red' }}>Error: {error}</p>}
 
