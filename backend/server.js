@@ -11,6 +11,13 @@ const port = process.env.PORT || 5000;
 app.use(cors()); // Enable CORS for all routes
 app.use(express.json()); // Middleware to parse JSON bodies
 
+const corsOptions = {
+    origin: 'https://nl-to-sql.vercel.app', // **Replace with your Vercel URL**
+    methods: 'POST', //  Allow only POST requests (adjust if needed)
+    allowedHeaders: ['Content-Type'], //  Allow Content-Type header
+};
+app.use(cors(corsOptions));
+
 const API_KEY = process.env.GEMINI_API_KEY; // API key from environment variables
 const genAI = new GoogleGenerativeAI(API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" }); // Use gemini-1.5-flash model // CORRECT INITIALIZATION (ADD THIS)// Initialize Gemini API with GoogleGenerativeAI
@@ -23,8 +30,6 @@ function extractRelevantTablesWithLLM(nl_query, schema) {
 
     return new Promise(async (resolve, reject) => { // Added Promise wrapper for async/await
         try {
-            const genAI = new GoogleGenerativeAI(API_KEY); // Correct initialization
-            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" }); // **MODIFIED: Using gemini-1.5-flash model**
 
             const response = await model.generateContent({ // Use 'model' instance
                 contents: [{ parts: [{ text: llm_prompt }] }],
