@@ -12,7 +12,7 @@ app.use(cors()); // Enable CORS for all routes
 app.use(express.json()); // Middleware to parse JSON bodies
 
 const corsOptions = {
-    origin: 'https://nl-to-sql.vercel.app', // **Replace with your Vercel URL**
+    origin: 'https://nl-to-sql-git-main-growasguards-projects.vercel.app/', // **Replace with your Vercel URL**
     methods: 'POST', //  Allow only POST requests (adjust if needed)
     allowedHeaders: ['Content-Type'], //  Allow Content-Type header
 };
